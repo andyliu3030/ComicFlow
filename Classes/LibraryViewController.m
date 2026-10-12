@@ -183,13 +183,13 @@ static void __DisplayQueueCallBack(void* info) {
   if ((self = [super init])) {
     _window = window;
     
-    _comicImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Comic-Background" ofType:@"png"]];
+    _comicImage = [[UIImage imageNamed:@"Comic-Background"] retain];
     XLOG_CHECK(_comicImage);
-    _collectionImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Collection-Background" ofType:@"png"]];
+    _collectionImage = [[UIImage imageNamed:@"Collection-Background"] retain];
     XLOG_CHECK(_collectionImage);
-    _newImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"New" ofType:@"png"]];
+    _newImage = [[UIImage imageNamed:@"New"] retain];
     XLOG_CHECK(_newImage);
-    _ribbonImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ribbon" ofType:@"png"]];
+    _ribbonImage = [[UIImage imageNamed:@"Ribbon"] retain];
     XLOG_CHECK(_ribbonImage);
     
     DatabaseSQLRowID collectionID = (int)[[NSUserDefaults standardUserDefaults] integerForKey:kDefaultKey_CurrentCollection];
@@ -398,7 +398,7 @@ static void __DisplayQueueCallBack(void* info) {
   self.view.backgroundColor = nil;  // Can't do this in Interface Builder
   
   _gridView.contentBackgroundOffset = CGPointMake(0.0, kBackgroundOffset);
-  _gridView.contentBackgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Background" ofType:@"png"]]];
+  _gridView.contentBackgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
   _gridView.delegate = self;
   UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_tap:)];
   [_gridView addGestureRecognizer:tapRecognizer];
