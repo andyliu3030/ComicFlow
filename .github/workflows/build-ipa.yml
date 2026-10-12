@@ -4,8 +4,10 @@
 # 然后在仓库的 Actions 页面手动运行（Run workflow）。
 # 产物为未签名 .ipa，需用 Sideloadly / AltStore 自签后安装到设备。
 #
-# 注意：不要用 macos-13，GitHub 已于 2025 年底下线该镜像，
-# 指向它的任务会永远卡在排队。当前可用的是 macos-15。
+# 注意：不要用 macos-13（GitHub 已于 2025 年底下线，任务会永远排队）。
+# 也不要用 macos-15：该镜像有已知 bug，ibtool 编译 xib 会报
+# "iOS Platform Not Installed"（actions/runner-images#13560），
+# 唯一可行的办法就是用 macos-14（2026-11-02 下线，跑一次构建够用了）。
 
 name: Build ComicFlow IPA for iOS 12
 
@@ -14,7 +16,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4
