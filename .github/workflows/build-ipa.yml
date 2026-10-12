@@ -3,6 +3,9 @@
 # 在仓库中新建文件 .github/workflows/build-ipa.yml，把本文件内容粘贴进去，
 # 然后在仓库的 Actions 页面手动运行（Run workflow）。
 # 产物为未签名 .ipa，需用 Sideloadly / AltStore 自签后安装到设备。
+#
+# 注意：不要用 macos-13，GitHub 已于 2025 年底下线该镜像，
+# 指向它的任务会永远卡在排队。当前可用的是 macos-15。
 
 name: Build ComicFlow IPA for iOS 12
 
@@ -11,22 +14,25 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Use Xcode 15 (supports iOS 12 deployment target)
+      - name: Use Xcode 16 (supports iOS 12 deployment target)
         run: |
           ls /Applications | grep -i xcode
-          XCODE_APP=$(ls -d /Applications/Xcode_15*.app 2>/dev/null | sort | tail -1)
+          XCODE_APP=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort | tail -1)
           if [ -z "$XCODE_APP" ]; then
-            echo "No Xcode 15 found, falling back to default"
-          else
+            XCODE_APP=$(ls -d /Applications/Xcode_15*.app 2>/dev/null | sort | tail -1)
+          fi
+          if [ -n "$XCODE_APP" ]; then
             echo "Using $XCODE_APP"
             sudo xcode-select -s "$XCODE_APP/Contents/Developer"
+          else
+            echo "WARNING: No Xcode 15/16 found, using default Xcode (may not support iOS 12 target)"
           fi
           xcodebuild -version
 
