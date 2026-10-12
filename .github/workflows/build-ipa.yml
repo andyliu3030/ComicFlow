@@ -45,6 +45,8 @@ jobs:
           #   而这个老工程没有共享 scheme，改用默认 DerivedData 路径。
           # - CLANG_CXX_LANGUAGE_STANDARD=c++14：2016 年自带的 unrar 老代码用了
           #   C++17 已删除的 register 关键字，默认标准下会直接编译报错。
+          # - GCC_TREAT_WARNINGS_AS_ERRORS=NO：工程默认把警告当错误，
+          #   新版 clang 对老代码会报很多无害警告，先关掉保证能编过。
           rm -rf ~/Library/Developer/Xcode/DerivedData
           xcodebuild \
             -project ComicFlow.xcodeproj \
@@ -53,6 +55,7 @@ jobs:
             -configuration Release \
             IPHONEOS_DEPLOYMENT_TARGET=12.0 \
             CLANG_CXX_LANGUAGE_STANDARD=c++14 \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Package unsigned IPA
