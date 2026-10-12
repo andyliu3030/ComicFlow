@@ -60,7 +60,8 @@ jobs:
 
       - name: Package unsigned IPA
         run: |
-          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "ComicFlow.app" -path "*Release-iphoneos*" | head -1)
+          # 注意：此老工程的构建产物在项目相对路径 build/ 下，而非默认 DerivedData
+          APP_PATH=$(find build ~/Library/Developer/Xcode/DerivedData -name "ComicFlow.app" -path "*Release-iphoneos*" 2>/dev/null | head -1)
           echo "App bundle: $APP_PATH"
           test -n "$APP_PATH"
           rm -rf Payload && mkdir Payload
