@@ -38,19 +38,24 @@ jobs:
 
       - name: Build ComicFlow (unsigned, target iOS 12)
         run: |
+          # 说明：
+          # - 不用 -derivedDataPath：新版 xcodebuild 要求它必须搭配 -scheme，
+          #   而这个老工程没有共享 scheme，改用默认 DerivedData 路径。
+          # - CLANG_CXX_LANGUAGE_STANDARD=c++14：2016 年自带的 unrar 老代码用了
+          #   C++17 已删除的 register 关键字，默认标准下会直接编译报错。
+          rm -rf ~/Library/Developer/Xcode/DerivedData
           xcodebuild \
             -project ComicFlow.xcodeproj \
             -target ComicFlow \
             -sdk iphoneos \
             -configuration Release \
-            -derivedDataPath build \
             IPHONEOS_DEPLOYMENT_TARGET=12.0 \
+            CLANG_CXX_LANGUAGE_STANDARD=c++14 \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Package unsigned IPA
         run: |
-          APP_DIR="build/Build/Products/Release-iphoneos"
-          APP_PATH=$(find "$APP_DIR" -maxdepth 1 -name "*.app" | head -1)
+          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "ComicFlow.app" -path "*Release-iphoneos*" | head -1)
           echo "App bundle: $APP_PATH"
           test -n "$APP_PATH"
           rm -rf Payload && mkdir Payload
