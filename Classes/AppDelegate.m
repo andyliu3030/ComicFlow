@@ -182,6 +182,11 @@
   [defaults setObject:[NSNumber numberWithInteger:0] forKey:kDefaultKey_LaunchCount];
   [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
   [defaults release];
+
+  // 自编译版本：启动时直接切到完整模式，取消网络服务器上传的 50 本试用上限
+  // （与内购完成后的处理一致，让已装旧版、额度已耗尽的设备也能恢复上传）
+  [[NSUserDefaults standardUserDefaults] setInteger:kServerMode_Full forKey:kDefaultKey_ServerMode];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDefaultKey_UploadsRemaining];
   
   // Seed random generator
   srandomdev();
