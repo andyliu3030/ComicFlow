@@ -78,7 +78,7 @@
 @synthesize gridView=_gridView, navigationBar=_navigationBar, segmentedControl=_segmentedControl, menuView=_menuView,
             markReadButton=_markReadButton, markNewButton=_markNewButton, updateButton=_updateButton,
             forceUpdateButton=_forceUpdateButton, serverControl=_serverControl, addressLabel=_addressLabel,
-            infoLabel=_infoLabel, versionLabel=_versionLabel, dimmingSwitch=_dimmingSwitch, clockSwitch=_clockSwitch, purchaseButton=_purchaseButton,
+            infoLabel=_infoLabel, versionLabel=_versionLabel, dimmingSwitch=_dimmingSwitch, clockControl=_clockControl, purchaseButton=_purchaseButton,
             restoreButton=_restoreButton;
 
 - (void) updatePurchase {
@@ -432,7 +432,7 @@ static void __DisplayQueueCallBack(void* info) {
   _updateButton.enabled = !updating;
   _forceUpdateButton.enabled = !updating;
   _dimmingSwitch.on = [(AppDelegate*)[AppDelegate sharedInstance] isScreenDimmed];
-  _clockSwitch.on = [(AppDelegate*)[AppDelegate sharedInstance] isClockShown];
+  _clockControl.selectedSegmentIndex = [(AppDelegate*)[AppDelegate sharedInstance] clockMode];
   
   if (kCFCoreFoundationVersionNumber < kCFCoreFoundationVersionNumber_iOS_7_0) {
     [_purchaseButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
@@ -465,7 +465,7 @@ static void __DisplayQueueCallBack(void* info) {
   self.infoLabel = nil;
   self.versionLabel = nil;
   self.dimmingSwitch = nil;
-  self.clockSwitch = nil;
+  self.clockControl = nil;
   self.purchaseButton = nil;
   self.restoreButton = nil;
   
@@ -1000,8 +1000,8 @@ static void __ArrayApplierFunction(const void* value, void* context) {
   [(AppDelegate*)[AppDelegate sharedInstance] setScreenDimmed:_dimmingSwitch.on];
 }
 
-- (IBAction) toggleClock:(id)sender {
-  [(AppDelegate*)[AppDelegate sharedInstance] setClockShown:_clockSwitch.on];
+- (IBAction) changeClockMode:(id)sender {
+  [(AppDelegate*)[AppDelegate sharedInstance] setClockMode:_clockControl.selectedSegmentIndex];
 }
 
 - (IBAction) purchase:(id)sender {

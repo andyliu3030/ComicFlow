@@ -33,7 +33,7 @@
   BOOL _purchasing;
 }
 @property(nonatomic, getter=isScreenDimmed) BOOL screenDimmed;
-@property(nonatomic, getter=isClockShown) BOOL clockShown;
+@property(nonatomic) NSInteger clockMode;
 + (AppDelegate*) sharedDelegate;
 - (void) updateLibrary;
 @end

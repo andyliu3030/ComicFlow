@@ -33,7 +33,7 @@
   UILabel* _infoLabel;
   UILabel* _versionLabel;
   UISwitch* _dimmingSwitch;
-  UISwitch* _clockSwitch;
+  UISegmentedControl* _clockControl;
   UIButton* _purchaseButton;
   UIButton* _restoreButton;
   
@@ -74,7 +74,7 @@
 @property(nonatomic, retain) IBOutlet UILabel* infoLabel;
 @property(nonatomic, retain) IBOutlet UILabel* versionLabel;
 @property(nonatomic, retain) IBOutlet UISwitch* dimmingSwitch;
-@property(nonatomic, retain) IBOutlet UISwitch* clockSwitch;
+@property(nonatomic, retain) IBOutlet UISegmentedControl* clockControl;
 @property(nonatomic, retain) IBOutlet UIButton* purchaseButton;
 @property(nonatomic, retain) IBOutlet UIButton* restoreButton;
 - (id) initWithWindow:(UIWindow*)window;
@@ -91,7 +91,7 @@
 - (IBAction) markAllNew:(id)sender;
 - (IBAction) showLog:(id)sender;
 - (IBAction) toggleDimming:(id)sender;
-- (IBAction) toggleClock:(id)sender;
+- (IBAction) changeClockMode:(id)sender;
 - (IBAction) purchase:(id)sender;
 - (IBAction) restore:(id)sender;
 @end

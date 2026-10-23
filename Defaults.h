@@ -26,7 +26,12 @@ typedef enum {
 #define kDefaultKey_UploadsRemaining @"uploadsRemaining"
 
 #define kDefaultKey_ScreenDimmed @"screenDimmed"
-#define kDefaultKey_ShowClock @"showClock"
+#define kDefaultKey_ClockMode @"clockMode"
+typedef enum {
+  kClockMode_Off = 0,
+  kClockMode_Always,
+  kClockMode_OnTap
+} ClockMode;
 
 #define kDefaultKey_RootTimestamp @"rootTimestamp"
 #define kDefaultKey_RootScrolling @"rootScrolling"

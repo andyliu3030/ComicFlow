@@ -19,6 +19,7 @@
 #endif
 
 #import "AppDelegate.h"
+#import "Defaults.h"
 #import "ComicViewController.h"
 #import "ZoomView.h"
 #import "MiniZip.h"
@@ -334,6 +335,12 @@
     else {
       _navigationBar.hidden = !_navigationBar.hidden;
       _navigationControl.hidden = !_navigationControl.hidden;
+      if ([(AppDelegate*)[AppDelegate sharedInstance] clockMode] == kClockMode_OnTap) {
+        _clockLabel.hidden = _navigationBar.hidden;
+        if (!_clockLabel.hidden) {
+          [self _updateClockLabel];
+        }
+      }
     }
   }
 }
@@ -363,11 +370,13 @@
       }
     }
   }
-  BOOL showClock = [(AppDelegate*)[AppDelegate sharedInstance] isClockShown];
-  _clockLabel.hidden = !showClock;
-  if (showClock) {
+  NSInteger clockMode = [(AppDelegate*)[AppDelegate sharedInstance] clockMode];
+  if (clockMode == kClockMode_Off) {
+    _clockLabel.hidden = YES;
+  } else {
     _clockLabel.frame = CGRectMake(self.view.bounds.size.width - 76, 24, 64, 24);
     [self _updateClockLabel];
+    _clockLabel.hidden = (clockMode == kClockMode_OnTap);
     if (_clockTimer == nil) {
       _clockTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:20.0] interval:20.0 target:self selector:@selector(_updateClockLabel) userInfo:nil repeats:YES];
       [[NSRunLoop mainRunLoop] addTimer:_clockTimer forMode:NSRunLoopCommonModes];

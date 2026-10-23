@@ -9,7 +9,7 @@
             <connections>
                 <outlet property="addressLabel" destination="57" id="68"/>
                 <outlet property="dimmingSwitch" destination="91" id="95"/>
-                <outlet property="clockSwitch" destination="clk2" id="clk3"/>
+                <outlet property="clockControl" destination="clk2" id="clk3"/>
                 <outlet property="forceUpdateButton" destination="35" id="40"/>
                 <outlet property="gridView" destination="4" id="46"/>
                 <outlet property="infoLabel" destination="44" id="74"/>
@@ -177,14 +177,19 @@
                     <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </label>
-                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="clk2">
-                    <rect key="frame" x="187" y="52" width="51" height="31"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" selectedSegmentIndex="1" id="clk2">
+                    <rect key="frame" x="172" y="53" width="136" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Off"/>
+                        <segment title="Always" selected="YES"/>
+                        <segment title="Tap"/>
+                    </segments>
                     <connections>
-                        <action selector="toggleClock:" destination="-1" eventType="valueChanged" id="clk4"/>
+                        <action selector="changeClockMode:" destination="-1" eventType="valueChanged" id="clk4"/>
                     </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Show Clock" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" id="clk1">
+                </segmentedControl>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Clock Mode" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" id="clk1">
                     <rect key="frame" x="53" y="57" width="111" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
