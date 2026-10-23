@@ -34,6 +34,7 @@
 }
 @property(nonatomic, getter=isScreenDimmed) BOOL screenDimmed;
 @property(nonatomic) NSInteger clockMode;
+@property(nonatomic) NSInteger batteryMode;
 + (AppDelegate*) sharedDelegate;
 - (void) updateLibrary;
 @end

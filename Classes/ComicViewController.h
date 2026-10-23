@@ -36,6 +36,7 @@ typedef enum {
   DocumentView* _documentView;
   UILabel* _pageLabel;
   UILabel* _clockLabel;
+  UILabel* _batteryLabel;
   NSTimer* _clockTimer;
   NSDateFormatter* _clockFormatter;
 }

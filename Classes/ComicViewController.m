@@ -163,6 +163,7 @@
   
   [_pageLabel release];
   [_clockLabel release];
+  [_batteryLabel release];
   [_clockFormatter release];
   if (_clockTimer) {
     [_clockTimer invalidate];
@@ -295,10 +296,36 @@
   _clockLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
   _clockLabel.hidden = YES;
   [self.view addSubview:_clockLabel];
+  
+  _batteryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, 56, 24)];
+  _batteryLabel.font = [UIFont boldSystemFontOfSize:15];
+  _batteryLabel.textColor = [UIColor whiteColor];
+  _batteryLabel.textAlignment = NSTextAlignmentCenter;
+  _batteryLabel.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+  _batteryLabel.layer.cornerRadius = 6.0;
+  _batteryLabel.clipsToBounds = YES;
+  _batteryLabel.opaque = NO;
+  _batteryLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+  _batteryLabel.hidden = YES;
+  [self.view addSubview:_batteryLabel];
 }
 
 - (void) _updateClockLabel {
   _clockLabel.text = [_clockFormatter stringFromDate:[NSDate date]];
+}
+
+- (void) _updateBatteryLabel {
+  float level = [[UIDevice currentDevice] batteryLevel];
+  if (level < 0) {
+    _batteryLabel.text = @"--%";
+  } else {
+    _batteryLabel.text = [NSString stringWithFormat:@"%d%%", (int)lroundf(level * 100.0f)];
+  }
+}
+
+- (void) _refreshOverlays {
+  [self _updateClockLabel];
+  [self _updateBatteryLabel];
 }
 
 - (void) viewDidUnload {
@@ -311,6 +338,8 @@
   [_documentView release];
   [_clockLabel release];
   _clockLabel = nil;
+  [_batteryLabel release];
+  _batteryLabel = nil;
   [_clockFormatter release];
   _clockFormatter = nil;
   
@@ -339,6 +368,12 @@
         _clockLabel.hidden = _navigationBar.hidden;
         if (!_clockLabel.hidden) {
           [self _updateClockLabel];
+        }
+      }
+      if ([(AppDelegate*)[AppDelegate sharedInstance] batteryMode] == kBatteryMode_OnTap) {
+        _batteryLabel.hidden = _navigationBar.hidden;
+        if (!_batteryLabel.hidden) {
+          [self _updateBatteryLabel];
         }
       }
     }
@@ -371,14 +406,17 @@
     }
   }
   NSInteger clockMode = [(AppDelegate*)[AppDelegate sharedInstance] clockMode];
-  if (clockMode == kClockMode_Off) {
-    _clockLabel.hidden = YES;
-  } else {
+  NSInteger batteryMode = [(AppDelegate*)[AppDelegate sharedInstance] batteryMode];
+  _clockLabel.hidden = (clockMode != kClockMode_Always);
+  _batteryLabel.hidden = (batteryMode != kBatteryMode_Always);
+  if (clockMode != kClockMode_Off || batteryMode != kBatteryMode_Off) {
     _clockLabel.frame = CGRectMake(self.view.bounds.size.width - 76, 24, 64, 24);
-    [self _updateClockLabel];
-    _clockLabel.hidden = (clockMode == kClockMode_OnTap);
+    _batteryLabel.frame = CGRectMake(self.view.bounds.size.width - 140, 24, 56, 24);
+    [UIDevice currentDevice].batteryMonitoringEnabled = YES;
+    [self _refreshOverlays];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_updateBatteryLabel) name:UIDeviceBatteryLevelDidChangeNotification object:nil];
     if (_clockTimer == nil) {
-      _clockTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:20.0] interval:20.0 target:self selector:@selector(_updateClockLabel) userInfo:nil repeats:YES];
+      _clockTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:20.0] interval:20.0 target:self selector:@selector(_refreshOverlays) userInfo:nil repeats:YES];
       [[NSRunLoop mainRunLoop] addTimer:_clockTimer forMode:NSRunLoopCommonModes];
     }
   }
@@ -402,6 +440,8 @@
 
 - (void) viewDidDisappear:(BOOL)animated {
   [super viewDidDisappear:animated];
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryLevelDidChangeNotification object:nil];
   
   if (_clockTimer) {
     [_clockTimer invalidate];

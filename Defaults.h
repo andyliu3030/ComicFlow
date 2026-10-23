@@ -32,6 +32,12 @@ typedef enum {
   kClockMode_Always,
   kClockMode_OnTap
 } ClockMode;
+#define kDefaultKey_BatteryMode @"batteryMode"
+typedef enum {
+  kBatteryMode_Off = 0,
+  kBatteryMode_Always,
+  kBatteryMode_OnTap
+} BatteryMode;
 
 #define kDefaultKey_RootTimestamp @"rootTimestamp"
 #define kDefaultKey_RootScrolling @"rootScrolling"

@@ -34,6 +34,7 @@
   UILabel* _versionLabel;
   UISwitch* _dimmingSwitch;
   UISegmentedControl* _clockControl;
+  UISegmentedControl* _batteryControl;
   UIButton* _purchaseButton;
   UIButton* _restoreButton;
   
@@ -75,6 +76,7 @@
 @property(nonatomic, retain) IBOutlet UILabel* versionLabel;
 @property(nonatomic, retain) IBOutlet UISwitch* dimmingSwitch;
 @property(nonatomic, retain) IBOutlet UISegmentedControl* clockControl;
+@property(nonatomic, retain) IBOutlet UISegmentedControl* batteryControl;
 @property(nonatomic, retain) IBOutlet UIButton* purchaseButton;
 @property(nonatomic, retain) IBOutlet UIButton* restoreButton;
 - (id) initWithWindow:(UIWindow*)window;
@@ -92,6 +94,7 @@
 - (IBAction) showLog:(id)sender;
 - (IBAction) toggleDimming:(id)sender;
 - (IBAction) changeClockMode:(id)sender;
+- (IBAction) changeBatteryMode:(id)sender;
 - (IBAction) purchase:(id)sender;
 - (IBAction) restore:(id)sender;
 @end

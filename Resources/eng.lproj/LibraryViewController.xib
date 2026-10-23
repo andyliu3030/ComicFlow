@@ -10,6 +10,7 @@
                 <outlet property="addressLabel" destination="57" id="68"/>
                 <outlet property="dimmingSwitch" destination="91" id="95"/>
                 <outlet property="clockControl" destination="clk2" id="clk3"/>
+                <outlet property="batteryControl" destination="bat2" id="bat3"/>
                 <outlet property="forceUpdateButton" destination="35" id="40"/>
                 <outlet property="gridView" destination="4" id="46"/>
                 <outlet property="infoLabel" destination="44" id="74"/>
@@ -74,7 +75,7 @@
             </userGuides>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="28">
-                    <rect key="frame" x="10" y="170" width="300" height="34"/>
+                    <rect key="frame" x="10" y="206" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>
@@ -84,7 +85,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="35">
-                    <rect key="frame" x="10" y="212" width="300" height="34"/>
+                    <rect key="frame" x="10" y="248" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>
@@ -113,7 +114,7 @@
                     </connections>
                 </segmentedControl>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ComicFlow Web Server" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="55">
-                    <rect key="frame" x="44" y="424" width="233" height="22"/>
+                    <rect key="frame" x="44" y="460" width="233" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -134,7 +135,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="76">
-                    <rect key="frame" x="10" y="254" width="300" height="34"/>
+                    <rect key="frame" x="10" y="290" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>
@@ -144,7 +145,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="78">
-                    <rect key="frame" x="10" y="128" width="300" height="34"/>
+                    <rect key="frame" x="10" y="164" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>
@@ -154,7 +155,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="80">
-                    <rect key="frame" x="10" y="86" width="300" height="34"/>
+                    <rect key="frame" x="10" y="122" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>
@@ -196,8 +197,27 @@
                     <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" selectedSegmentIndex="1" id="bat2">
+                    <rect key="frame" x="172" y="87" width="136" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Off"/>
+                        <segment title="Always" selected="YES"/>
+                        <segment title="Tap"/>
+                    </segments>
+                    <connections>
+                        <action selector="changeBatteryMode:" destination="-1" eventType="valueChanged" id="bat4"/>
+                    </connections>
+                </segmentedControl>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Battery Mode" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" id="bat1">
+                    <rect key="frame" x="53" y="91" width="111" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="97">
-                    <rect key="frame" x="10" y="318" width="300" height="34"/>
+                    <rect key="frame" x="10" y="354" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>
@@ -207,7 +227,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="AYB-gv-6fg">
-                    <rect key="frame" x="10" y="360" width="300" height="34"/>
+                    <rect key="frame" x="10" y="396" width="300" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <size key="titleShadowOffset" width="0.0" height="1"/>

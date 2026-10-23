@@ -175,6 +175,7 @@
   [defaults setObject:[NSNumber numberWithInteger:kTrialMaxUploads] forKey:kDefaultKey_UploadsRemaining];
   [defaults setObject:[NSNumber numberWithBool:NO] forKey:kDefaultKey_ScreenDimmed];
   [defaults setObject:[NSNumber numberWithInteger:kClockMode_Always] forKey:kDefaultKey_ClockMode];
+  [defaults setObject:[NSNumber numberWithInteger:kBatteryMode_Always] forKey:kDefaultKey_BatteryMode];
   [defaults setObject:[NSNumber numberWithDouble:0.0] forKey:kDefaultKey_RootTimestamp];
   [defaults setObject:[NSNumber numberWithInteger:0] forKey:kDefaultKey_RootScrolling];
   [defaults setObject:[NSNumber numberWithInteger:0] forKey:kDefaultKey_CurrentCollection];
@@ -327,6 +328,14 @@
 
 - (void) setClockMode:(NSInteger)mode {
   [[NSUserDefaults standardUserDefaults] setInteger:mode forKey:kDefaultKey_ClockMode];
+}
+
+- (NSInteger) batteryMode {
+  return [[NSUserDefaults standardUserDefaults] integerForKey:kDefaultKey_BatteryMode];
+}
+
+- (void) setBatteryMode:(NSInteger)mode {
+  [[NSUserDefaults standardUserDefaults] setInteger:mode forKey:kDefaultKey_BatteryMode];
 }
 
 @end
