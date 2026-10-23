@@ -2,7 +2,8 @@
 # 用法：fork https://github.com/swisspol/ComicFlow 后，
 # 在仓库中新建文件 .github/workflows/build-ipa.yml，把本文件内容粘贴进去，
 # 然后在仓库的 Actions 页面手动运行（Run workflow）。
-# 产物为未签名 .ipa，需用 Sideloadly / AltStore 自签后安装到设备。
+# 产物 .ipa 在打包前会做 ad-hoc 签名（见 Package 步骤说明），
+# 仍需用 Sideloadly / AltStore 自签后安装到设备。
 #
 # 注意：不要用 macos-13（GitHub 已于 2025 年底下线，任务会永远排队）。
 # 也不要用 macos-15：该镜像有已知 bug，ibtool 编译 xib 会报
@@ -58,7 +59,7 @@ jobs:
             GCC_TREAT_WARNINGS_AS_ERRORS=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Package unsigned IPA
+      - name: Package IPA (ad-hoc signed)
         run: |
           # 注意：此老工程的构建产物在项目相对路径 build/ 下，而非默认 DerivedData
           APP_PATH=$(find build ~/Library/Developer/Xcode/DerivedData -name "ComicFlow.app" -path "*Release-iphoneos*" 2>/dev/null | head -1)
@@ -66,6 +67,14 @@ jobs:
           test -n "$APP_PATH"
           rm -rf Payload && mkdir Payload
           cp -R "$APP_PATH" Payload/
+          # 打包前做 ad-hoc 签名：构建时 CODE_SIGNING_ALLOWED=NO 产出的主程序
+          # 连 LC_CODE_SIGNATURE 都没有（完全零签名）。PlayCover 导入时会报
+          # "code object is not signed at all" 并拒绝——它只能替换已有签名。
+          # ad-hoc 签名先给主程序补上签名结构，PlayCover 即可接手重签；
+          # Sideloadly 安装时本来就会整体换签名，iPad 路线不受影响。
+          codesign --force --deep --sign - --timestamp=none Payload/ComicFlow.app
+          codesign --verify --verbose=2 Payload/ComicFlow.app
+          codesign -dvvv Payload/ComicFlow.app 2>&1 | head -20
           rm -f ComicFlow-iOS12-unsigned.ipa
           zip -qry ComicFlow-iOS12-unsigned.ipa Payload
           ls -lh ComicFlow-iOS12-unsigned.ipa
