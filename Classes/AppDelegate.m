@@ -174,6 +174,7 @@
   [defaults setObject:[NSNumber numberWithInteger:kServerMode_Trial] forKey:kDefaultKey_ServerMode];
   [defaults setObject:[NSNumber numberWithInteger:kTrialMaxUploads] forKey:kDefaultKey_UploadsRemaining];
   [defaults setObject:[NSNumber numberWithBool:NO] forKey:kDefaultKey_ScreenDimmed];
+  [defaults setObject:[NSNumber numberWithBool:YES] forKey:kDefaultKey_ShowClock];
   [defaults setObject:[NSNumber numberWithDouble:0.0] forKey:kDefaultKey_RootTimestamp];
   [defaults setObject:[NSNumber numberWithInteger:0] forKey:kDefaultKey_RootScrolling];
   [defaults setObject:[NSNumber numberWithInteger:0] forKey:kDefaultKey_CurrentCollection];
@@ -318,6 +319,14 @@
     }
   }];
   [[NSUserDefaults standardUserDefaults] setBool:flag forKey:kDefaultKey_ScreenDimmed];
+}
+
+- (BOOL) isClockShown {
+  return [[NSUserDefaults standardUserDefaults] boolForKey:kDefaultKey_ShowClock];
+}
+
+- (void) setClockShown:(BOOL)flag {
+  [[NSUserDefaults standardUserDefaults] setBool:flag forKey:kDefaultKey_ShowClock];
 }
 
 @end

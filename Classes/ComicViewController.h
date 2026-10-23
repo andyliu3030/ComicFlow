@@ -35,6 +35,9 @@ typedef enum {
   id _contents;
   DocumentView* _documentView;
   UILabel* _pageLabel;
+  UILabel* _clockLabel;
+  NSTimer* _clockTimer;
+  NSDateFormatter* _clockFormatter;
 }
 @property(nonatomic, retain) IBOutlet UINavigationBar* navigationBar;
 @property(nonatomic, retain) IBOutlet NavigationControl* navigationControl;

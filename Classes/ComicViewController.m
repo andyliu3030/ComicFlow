@@ -161,6 +161,12 @@
   [_contentView release];
   
   [_pageLabel release];
+  [_clockLabel release];
+  [_clockFormatter release];
+  if (_clockTimer) {
+    [_clockTimer invalidate];
+    [_clockTimer release];
+  }
   [_documentView release];
   [_contents release];
   [_path release];
@@ -273,6 +279,25 @@
   _pageLabel.textAlignment = NSTextAlignmentCenter;
   _pageLabel.backgroundColor = nil;
   _pageLabel.opaque = NO;
+  
+  _clockFormatter = [[NSDateFormatter alloc] init];
+  [_clockFormatter setDateFormat:@"HH:mm"];
+  
+  _clockLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, 64, 24)];
+  _clockLabel.font = [UIFont boldSystemFontOfSize:15];
+  _clockLabel.textColor = [UIColor whiteColor];
+  _clockLabel.textAlignment = NSTextAlignmentCenter;
+  _clockLabel.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+  _clockLabel.layer.cornerRadius = 6.0;
+  _clockLabel.clipsToBounds = YES;
+  _clockLabel.opaque = NO;
+  _clockLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+  _clockLabel.hidden = YES;
+  [self.view addSubview:_clockLabel];
+}
+
+- (void) _updateClockLabel {
+  _clockLabel.text = [_clockFormatter stringFromDate:[NSDate date]];
 }
 
 - (void) viewDidUnload {
@@ -283,6 +308,10 @@
   
   [_pageLabel release];
   [_documentView release];
+  [_clockLabel release];
+  _clockLabel = nil;
+  [_clockFormatter release];
+  _clockFormatter = nil;
   
   self.navigationBar = nil;
   self.navigationControl = nil;
@@ -334,6 +363,17 @@
       }
     }
   }
+  BOOL showClock = [(AppDelegate*)[AppDelegate sharedInstance] isClockShown];
+  _clockLabel.hidden = !showClock;
+  if (showClock) {
+    _clockLabel.frame = CGRectMake(self.view.bounds.size.width - 76, 24, 64, 24);
+    [self _updateClockLabel];
+    if (_clockTimer == nil) {
+      _clockTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:20.0] interval:20.0 target:self selector:@selector(_updateClockLabel) userInfo:nil repeats:YES];
+      [[NSRunLoop mainRunLoop] addTimer:_clockTimer forMode:NSRunLoopCommonModes];
+    }
+  }
+  
   [_documentView setPageViews:array initialPageIndex:MAX(_comic.status, 0)];
   _navigationControl.numberOfPages = array.count;
   _navigationControl.numberOfMarkers = MIN(array.count, 50);
@@ -353,6 +393,12 @@
 
 - (void) viewDidDisappear:(BOOL)animated {
   [super viewDidDisappear:animated];
+  
+  if (_clockTimer) {
+    [_clockTimer invalidate];
+    [_clockTimer release];
+    _clockTimer = nil;
+  }
   
   _documentView.pageViews = nil;
 }
